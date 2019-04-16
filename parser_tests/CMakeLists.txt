@@ -9,5 +9,5 @@ add_executable(ParserTests basic_suite.cpp errors_suite.cpp extra_suite.cpp)
 target_link_libraries(ParserTests ${EXTRA_LIBS})
 target_include_directories(ParserTests PUBLIC ${EXTRA_INCLUDES})
 
-add_test(Name ParserTests COMMAND ParserTests)
+add_test(NAME ParserTests COMMAND ParserTests)
 
