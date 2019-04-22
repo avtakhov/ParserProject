@@ -40,6 +40,11 @@ SpecifiedTwiceParameterException::SpecifiedTwiceParameterException(const string&
 {
 }
 
+MissingQuotesException::MissingQuotesException(const string& params, const ParamsChunk& position) :
+    ParsingException("Missing terminating quotes character", params, position)
+{
+}
+
 const char* ParsingException::what() const noexcept
 {
     return m_description.c_str();

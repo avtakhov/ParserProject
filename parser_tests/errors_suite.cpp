@@ -7,8 +7,6 @@ using namespace std;
 namespace
 {
     const auto MISSING_PARAM_NAME_INPUT = "/first 1 / 2"s;
-    const auto UNEXPECTED_VALUE_INPUT = "/verbosity quiet something else"s;
-    const auto SPECIFIED_TWICE_PARAM_INPUT = "/verbosity debug /verbosity quiet"s;
 }
 
 TEST(ErrorsSuite, MissingParamNameTest)
@@ -32,6 +30,11 @@ TEST(ErrorsSuite, MissingParamNameDetailsTest)
     }
 }
 
+namespace
+{
+    const auto UNEXPECTED_VALUE_INPUT = "/verbosity quiet something else"s;
+}
+
 TEST(ErrorsSuite, UnexpectedValueTest)
 {
     ASSERT_THROW(ParseParams(UNEXPECTED_VALUE_INPUT), UnexpectedValueException);
@@ -53,12 +56,17 @@ TEST(ErrorsSuite, UnexpectedValueDetailsTest)
     }
 }
 
+namespace
+{
+    const auto SPECIFIED_TWICE_PARAM_INPUT = "/verbosity debug /verbosity quiet"s;
+}
+
 TEST(ErrorsSuite, SpecifiedTwiceParamTest)
 {
     ASSERT_THROW(ParseParams(SPECIFIED_TWICE_PARAM_INPUT), SpecifiedTwiceParameterException);
 }
 
-TEST(ErrorsSuite, SpecifiedTwiceParamNameTest)
+TEST(ErrorsSuite, SpecifiedTwiceParamDetailsTest)
 {
     try
     {
@@ -74,3 +82,28 @@ TEST(ErrorsSuite, SpecifiedTwiceParamNameTest)
     }
 }
 
+namespace
+{
+    const auto BAD_QUOTES_INPUT = "/name \"Jane Doe"s;
+}
+
+TEST(ErrorsSuite, MissingQuotesTest)
+{
+    ASSERT_THROW(ParseParams(BAD_QUOTES_INPUT), MissingQuotesException);
+}
+
+TEST(ErrorsSuite, MissingQuotesDetailsTest)
+{
+    try
+    {
+        ParseParams(BAD_QUOTES_INPUT);
+    }
+    catch(const MissingQuotesException& ex)
+    {
+        const auto pos = ex.GetErrorPosition();
+        ASSERT_EQ(6, pos.begin);
+        ASSERT_EQ(15, pos.end);
+        ASSERT_EQ("\"Jane Doe", ex.GetErrorPart());
+        ASSERT_EQ("Missing terminating quotes character at [7, 15] in \"" + BAD_QUOTES_INPUT + "\"", ex.what());
+    }
+}

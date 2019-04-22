@@ -46,5 +46,11 @@ public:
     SpecifiedTwiceParameterException(const std::string& params, const ParamsChunk& position);
 };
 
+class MissingQuotesException : public ParsingException
+{
+public:
+    MissingQuotesException(const std::string& params, const ParamsChunk& position);
+};
+
 #endif // PARSER_EXCEPTIONS_H_INCLUDED
 
