@@ -4,6 +4,15 @@
 
 using namespace std;
 
+TEST(ExtraSuite, EmptyValueInQuotes)
+{
+    const map<string, string> EXPECTED = {
+        { "param", "" }
+    };
+    const auto result = ParseParams("/param \"\"");
+    ASSERT_EQ(EXPECTED, result);
+}
+
 TEST(ExtraSuite, ValueWithQuotes)
 {
     const map<string, string> EXPECTED = {
