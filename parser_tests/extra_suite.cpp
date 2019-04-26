@@ -13,6 +13,24 @@ TEST(ExtraSuite, EmptyValueInQuotes)
     ASSERT_EQ(EXPECTED, result);
 }
 
+TEST(ExtraSuite, OneLetterInQuotes)
+{
+    const map<string, string> EXPECTED = {
+        { "param", "x" }
+    };
+    const auto result = ParseParams("/param \"x\"");
+    ASSERT_EQ(EXPECTED, result);
+}
+
+TEST(ExtraSuite, OneSpaceInQuotes)
+{
+    const map<string, string> EXPECTED = {
+        { "param", " " }
+    };
+    const auto result = ParseParams("/param \" \"");
+    ASSERT_EQ(EXPECTED, result);
+}
+
 TEST(ExtraSuite, ValueWithQuotes)
 {
     const map<string, string> EXPECTED = {
