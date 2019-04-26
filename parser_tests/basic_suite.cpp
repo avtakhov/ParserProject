@@ -18,6 +18,15 @@ TEST(BasicSuite, OneParamTest)
     ASSERT_EQ(EXPECTED, result);
 }
 
+TEST(BasicSuite, OneLetterValueTest)
+{
+    const map<string, string> EXPECTED = {
+        { "param", "x" }
+    };
+    const auto result = ParseParams("/param x");
+    ASSERT_EQ(EXPECTED, result);
+}
+
 TEST(BasicSuite, TwoParamsTest)
 {
     const map<string, string> EXPECTED = {
