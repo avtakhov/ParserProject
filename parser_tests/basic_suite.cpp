@@ -102,3 +102,21 @@ TEST(BasicSuite, MixedParamTypes)
     ASSERT_EQ(EXPECTED, result);
 }
 
+TEST(BasicSuite, MixedParamTypesWithTabs)
+{
+    const map<string, string> EXPECTED = {
+        {"silent", ""}, {"verbosity", "quiet"}, {"installdir", "C:\\Program Files\\My Application"},
+        {"reboot", ""}, {"email", "username@example.com"}, {"licenseKey", "C:\\Users\\username\\Desktop\\license.key"},
+        {"text", "Some text\twith\ttabs"}
+    };
+    const auto result = ParseParams(
+        "/silent\t"
+        "/verbosity quiet \t"
+        "/installdir \"C:\\Program Files\\My Application\" \t "
+        "/reboot    "
+        "/email \t \"username@example.com\" "
+        "/licenseKey\t\t\t\"C:\\Users\\username\\Desktop\\license.key\"\t\t\t"
+        "/text \"Some text\twith\ttabs\""
+    );
+    ASSERT_EQ(EXPECTED, result);
+}
