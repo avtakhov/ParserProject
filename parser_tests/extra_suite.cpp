@@ -31,7 +31,16 @@ TEST(ExtraSuite, OneSpaceInQuotes)
     ASSERT_EQ(EXPECTED, result);
 }
 
-TEST(ExtraSuite, ValueWithQuotes)
+TEST(ExtraSuite, EscapedBackslashInQuotes)
+{
+    const map<string, string> EXPECTED = {
+        { "param", "\\" },
+    };
+    const auto result = ParseParams(R"(/param "\\")");
+    ASSERT_EQ(EXPECTED, result);
+}
+
+TEST(ExtraSuite, QuotedValueWithQuote)
 {
     const map<string, string> EXPECTED = {
         { "doubleQuote", "\"" },
@@ -41,7 +50,7 @@ TEST(ExtraSuite, ValueWithQuotes)
     ASSERT_EQ(EXPECTED, result);
 }
 
-TEST(ExtraSuite, ValueWithSlashAndQuote)
+TEST(ExtraSuite, QuotedValueWithSlashAndQuote)
 {
     const map<string, string> EXPECTED = {
         { "slashAndDoubleQ", R"(/")" },
@@ -51,7 +60,7 @@ TEST(ExtraSuite, ValueWithSlashAndQuote)
     ASSERT_EQ(EXPECTED, result);
 }
 
-TEST(ExtraSuite, ValueWithBackSlashAndQuote)
+TEST(ExtraSuite, QuotedValueWithBackSlashAndQuote)
 {
     const map<string, string> EXPECTED = {
         { "backslashAndDoubleQ", R"(\")" },
