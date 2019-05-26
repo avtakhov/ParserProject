@@ -58,6 +58,32 @@ TEST(ErrorsSuite, UnexpectedValueDetailsTest)
 
 namespace
 {
+    const auto UNEXPECTED_VALUE_WITH_QUOTES_INPUT = "/name \"Jane Doe\" \"Default City\""s;
+}
+
+TEST(ErrorsSuite, UnexpectedValueWithQuotesTest)
+{
+    ASSERT_THROW(ParseParams(UNEXPECTED_VALUE_WITH_QUOTES_INPUT), UnexpectedValueException);
+}
+
+TEST(ErrorsSuite, UnexpectedValueWithQuotesDetailsTest)
+{
+    try
+    {
+        ParseParams(UNEXPECTED_VALUE_WITH_QUOTES_INPUT);
+    }
+    catch(const UnexpectedValueException& ex)
+    {
+        const auto pos = ex.GetErrorPosition();
+        ASSERT_EQ(17, pos.begin);
+        ASSERT_EQ(31, pos.end);
+        ASSERT_EQ("\"Default City\"", ex.GetErrorPart());
+        ASSERT_EQ("Unexpected value at [18, 31] in \"" + UNEXPECTED_VALUE_WITH_QUOTES_INPUT + "\"", ex.what());
+    }
+}
+
+namespace
+{
     const auto SPECIFIED_TWICE_PARAM_INPUT = "/verbosity debug /verbosity quiet"s;
 }
 
