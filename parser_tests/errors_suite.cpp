@@ -110,19 +110,19 @@ TEST(ErrorsSuite, SpecifiedTwiceParamDetailsTest)
 
 namespace
 {
-    const auto BAD_QUOTES_INPUT = "/name \"Jane Doe"s;
+    const auto MISSING_QUOTES_INPUT = "/name \"Jane Doe"s;
 }
 
 TEST(ErrorsSuite, MissingQuotesTest)
 {
-    ASSERT_THROW(ParseParams(BAD_QUOTES_INPUT), MissingQuotesException);
+    ASSERT_THROW(ParseParams(MISSING_QUOTES_INPUT), MissingQuotesException);
 }
 
 TEST(ErrorsSuite, MissingQuotesDetailsTest)
 {
     try
     {
-        ParseParams(BAD_QUOTES_INPUT);
+        ParseParams(MISSING_QUOTES_INPUT);
     }
     catch(const MissingQuotesException& ex)
     {
@@ -130,6 +130,33 @@ TEST(ErrorsSuite, MissingQuotesDetailsTest)
         ASSERT_EQ(6, pos.begin);
         ASSERT_EQ(15, pos.end);
         ASSERT_EQ("\"Jane Doe", ex.GetErrorPart());
-        ASSERT_EQ("Missing terminating quotes character at [7, 15] in \"" + BAD_QUOTES_INPUT + "\"", ex.what());
+        ASSERT_EQ("Missing terminating quotes character at [7, 15] in \"" + MISSING_QUOTES_INPUT + "\"", ex.what());
+    }
+}
+
+
+namespace
+{
+    const auto TWO_VALUES_MISSING_QUOTES_INPUT = "/name \"Jane Doe /city \"Default City\""s;
+}
+
+TEST(ErrorsSuite, TwoValuesMissingQuotesTest)
+{
+    ASSERT_THROW(ParseParams(TWO_VALUES_MISSING_QUOTES_INPUT), MissingQuotesException);
+}
+
+TEST(ErrorsSuite, TwoValuesMissingQuotesDetailsTest)
+{
+    try
+    {
+        ParseParams(TWO_VALUES_MISSING_QUOTES_INPUT);
+    }
+    catch(const MissingQuotesException& ex)
+    {
+        const auto pos = ex.GetErrorPosition();
+        ASSERT_EQ(6, pos.begin);
+        ASSERT_EQ(23, pos.end);
+        ASSERT_EQ("\"Jane Doe /city \"", ex.GetErrorPart());
+        ASSERT_EQ("Missing terminating quotes character at [7, 23] in \"" + TWO_VALUES_MISSING_QUOTES_INPUT + "\"", ex.what());
     }
 }
