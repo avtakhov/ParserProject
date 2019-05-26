@@ -40,6 +40,24 @@ TEST(ExtraSuite, EscapedBackslashInQuotes)
     ASSERT_EQ(EXPECTED, result);
 }
 
+TEST(ExtraSuite, EscapedSlashWithoutQuotes)
+{
+    const map<string, string> EXPECTED = {
+        { "param", "/" },
+    };
+    const auto result = ParseParams(R"(/param \/)");
+    ASSERT_EQ(EXPECTED, result);
+}
+
+TEST(ExtraSuite, EscapedBackslashWithoutQuotes)
+{
+    const map<string, string> EXPECTED = {
+        { "param", "\\" },
+    };
+    const auto result = ParseParams(R"(/param \\)");
+    ASSERT_EQ(EXPECTED, result);
+}
+
 TEST(ExtraSuite, QuotedValueWithQuote)
 {
     const map<string, string> EXPECTED = {
@@ -64,6 +82,19 @@ TEST(ExtraSuite, QuotedValueWithBackSlashAndQuote)
         { "param", R"(\")" }
     };
     const auto result = ParseParams(R"(/param "\\\"")");
+    ASSERT_EQ(EXPECTED, result);
+}
+
+TEST(ExtraSuite, EscapedSymbolsWithoutQuotes)
+{
+    const map<string, string> EXPECTED = {
+        { "windowsPath", "C:\\Users\\username\\Downloads\\Fear and Loathing in Las Vegas.avi" },
+        { "unix_path", "/home/username/Downloads/Fear and Loathing in Las Vegas.avi" }
+    };
+    const auto result = ParseParams(
+        "/windowsPath C:\\Users\\username\\Downloads\\Fear\\ and\\ Loathing\\ in\\ Las\\ Vegas.avi "\
+        "/unix_path \\/home/username/Downloads/Fear\\ and\\ Loathing\\ in\\ Las\\ Vegas.avi"
+    );
     ASSERT_EQ(EXPECTED, result);
 }
 
@@ -99,4 +130,3 @@ TEST(ExtraSuite, ValueWithEscapedParams)
         ASSERT_EQ(EXPECTED, ParseParams(params));
     }
 }
-
