@@ -12,7 +12,7 @@ struct ParamsChunk
 class ParsingException : public std::exception
 {
 public:
-    ParsingException(const std::string& description, const std::string& params, const ParamsChunk& position);
+    ParsingException(const std::string& description, std::string_view params, const ParamsChunk& position);
     virtual ~ParsingException() = default;
 
     const char* what() const noexcept override;
@@ -20,7 +20,8 @@ public:
     std::string GetErrorPart() const;
 
 private:
-    static std::string FormatFullDescription(const std::string& description, const std::string& params, const ParamsChunk& position);
+    static std::string FormatFullDescription(const std::string& description, std::string_view params,
+                                             const ParamsChunk& position);
 
 private:
     const std::string m_description;
@@ -31,25 +32,25 @@ private:
 class MissingParameterNameException : public ParsingException
 {
 public:
-    MissingParameterNameException(const std::string& params, const ParamsChunk& position);
+    MissingParameterNameException(std::string_view params, const ParamsChunk& position);
 };
 
 class UnexpectedValueException : public ParsingException
 {
 public:
-    UnexpectedValueException(const std::string& params, const ParamsChunk& position);
+    UnexpectedValueException(std::string_view params, const ParamsChunk& position);
 };
 
 class SpecifiedTwiceParameterException : public ParsingException
 {
 public:
-    SpecifiedTwiceParameterException(const std::string& params, const ParamsChunk& position);
+    SpecifiedTwiceParameterException(std::string_view params, const ParamsChunk& position);
 };
 
 class MissingQuotesException : public ParsingException
 {
 public:
-    MissingQuotesException(const std::string& params, const ParamsChunk& position);
+    MissingQuotesException(std::string_view params, const ParamsChunk& position);
 };
 
 #endif // PARSER_EXCEPTIONS_H_INCLUDED

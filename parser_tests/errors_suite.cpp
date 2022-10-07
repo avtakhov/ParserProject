@@ -142,7 +142,7 @@ namespace
 
 TEST(ErrorsSuite, TwoValuesMissingQuotesTest)
 {
-    ASSERT_THROW(ParseParams(TWO_VALUES_MISSING_QUOTES_INPUT), MissingQuotesException);
+    ASSERT_THROW(ParseParams(TWO_VALUES_MISSING_QUOTES_INPUT), UnexpectedValueException);
 }
 
 TEST(ErrorsSuite, TwoValuesMissingQuotesDetailsTest)
@@ -151,12 +151,12 @@ TEST(ErrorsSuite, TwoValuesMissingQuotesDetailsTest)
     {
         ParseParams(TWO_VALUES_MISSING_QUOTES_INPUT);
     }
-    catch(const MissingQuotesException& ex)
+    catch(const UnexpectedValueException& ex)
     {
         const auto pos = ex.GetErrorPosition();
-        ASSERT_EQ(6, pos.begin);
-        ASSERT_EQ(23, pos.end);
-        ASSERT_EQ("\"Jane Doe /city \"", ex.GetErrorPart());
-        ASSERT_EQ("Missing terminating quotes character at [7, 23] in \"" + TWO_VALUES_MISSING_QUOTES_INPUT + "\"", ex.what());
+        ASSERT_EQ(23, pos.begin);
+        ASSERT_EQ(30, pos.end);
+        ASSERT_EQ("Default", ex.GetErrorPart());
+        ASSERT_EQ("Unexpected value at [24, 30] in \"" + TWO_VALUES_MISSING_QUOTES_INPUT + "\"", ex.what());
     }
 }

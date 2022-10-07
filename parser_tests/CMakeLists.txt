@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
+set(CMAKE_CXX_STANDARD 20)
 set(SRC_PATH "${PROJECT_SOURCE_DIR}")
 set(GTEST_PATH "${PROJECT_SOURCE_DIR}/deps/gtest/googletest/include")
 list(APPEND EXTRA_LIBS ParamsParser gtest gtest_main)
